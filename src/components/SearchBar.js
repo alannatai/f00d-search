@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, TextInput } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-const SearchBar = ({ searchTerm, onSearchTermChange }) => {
+const SearchBar = ({ searchTerm, onSearchTermChange, onSearchTermSubmit }) => {
   return (
     <View style={styles.background}>
       <FontAwesome style={styles.icon} name='search' />
@@ -10,8 +10,9 @@ const SearchBar = ({ searchTerm, onSearchTermChange }) => {
         style={styles.input}
         placeholder='Search'
         value={searchTerm}
-        onChangeText={(newTerm) => onSearchTermChange(newTerm)}
+        onChangeText={onSearchTermChange}
         autoCorrect={false}
+        onEndEditing={onSearchTermSubmit}
       />
     </View>
   );
