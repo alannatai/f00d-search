@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
 
 import RestaurantList from '../components/RestaurantList';
 import SearchBar from '../components/SearchBar';
@@ -8,6 +8,14 @@ import useRestaurants from '../hooks/useRestaurants';
 const SearchScreen = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchApi, restaurants, errorMessage] = useRestaurants();
+
+  const sections = ['$', '$$', '$$$', '$$$$'];
+
+  const filterResultsByPrice = (price) => {
+    return restaurants.filter((restaurant) => {
+      return restaurant.price === price;
+    });
+  };
 
   return (
     <View>
@@ -20,7 +28,16 @@ const SearchScreen = () => {
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       ) : null}
-      <RestaurantList />
+      <FlatList
+        data={sections}
+        keyExtractor={(section) => section}
+        renderItem={({ item }) => (
+          <RestaurantList
+            restaurants={filterResultsByPrice(item)}
+            title={item}
+          />
+        )}
+      />
     </View>
   );
 };
@@ -28,6 +45,9 @@ const SearchScreen = () => {
 const styles = StyleSheet.create({
   errorMessage: {
     color: 'red',
+  },
+  restaurantList: {
+    height: 300,
   },
 });
 
